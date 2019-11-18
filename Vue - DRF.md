@@ -59,4 +59,19 @@
    		package.json
    ```
 
-   
+
+
+
+## 2. DRF 모델링
+
+## 3. Vue 모델링
+
+### Vue-router
+
+```bash
+$ npm i vue-router
+$ npm use router
+> Still proceed?  y
+> Use history mode for router?(Requires proper server setup for index fallback in production) y
+```
+
