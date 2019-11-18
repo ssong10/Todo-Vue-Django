@@ -1,12 +1,21 @@
 <template>
   <div class="todo-list">
-      <h2>Todo</h2>
+    {{todos}}
+    <ul>
+      <li v-for="todo in todos" :key="todo.id">{{todo.title}}</li>
+    </ul>
   </div>
 </template>
 
 <script>
 export default {
-    name:'TodoList'
+    name:'TodoList',
+    props :{
+      todos: {
+        type : Array,
+        required : true
+      }
+    },
 }
 </script>
 

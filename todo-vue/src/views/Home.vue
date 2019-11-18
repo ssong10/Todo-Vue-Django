@@ -1,6 +1,7 @@
 <template>
   <div class="home">
-    <TodoList />
+    <h2>Todo</h2>
+    <TodoList :todos="todos" />
   </div>
 </template>
 
@@ -24,7 +25,11 @@ export default {
     //axios 요청
     axios.get('http://127.0.0.1:8000/api/v1/todos/')
     .then(response => {
+      this.todos = response.data
       console.log(response) // 만약 console.log 에러가 나게 된다면, package.json-> "no-console-off"
+    })
+    .catch(error =>{
+    console.log(error)
     })
   }
 }
