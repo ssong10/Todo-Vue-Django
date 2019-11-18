@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 // views 폴더에는 해당 경로에서 쓰이는 컴포넌트(vue파일)을 정의
 // components 폴더에는 각 경로별 컴포넌트의 자식 컴포넌트(vue)를 정의
+
 Vue.use(VueRouter)
 
 // 경로 설정
