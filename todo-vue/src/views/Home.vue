@@ -45,8 +45,16 @@ export default {
       })
     },
     getTodos() {
+      // axios 요청 시마다 헤더를 추가해서 보내라!
+      this.$session.start()
+      const token = this.$session.get('jwt')
+      const options = {
+        headers : {
+          Authorization : `JWT ${token}`
+        }
+      }
       //axios 요청
-      axios.get('http://127.0.0.1:8000/api/v1/todos/')
+      axios.get('http://127.0.0.1:8000/api/v1/todos/',options)
       .then(response => {
         this.todos = response.data
         console.log(response) // 만약 console.log 에러가 나게 된다면, package.json-> "no-console-off"
