@@ -16,6 +16,8 @@ def todo_index_create(request):
         serializers = TodoSerializers(todos,many=True)
         return Response(serializers.data)
     else:
+        # request.POST : formData로 POST 전송이 되었을 때
+        # request.data : formData POST 전송 및 data로 전송 모두
         serializers = TodoSerializers(data=request.POST)
         if serializers.is_valid(raise_exception=True):
             serializers.save()

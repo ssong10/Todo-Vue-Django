@@ -1,8 +1,10 @@
 <template>
   <div class="todo-list">
-    {{todos}}
     <ul>
-      <li v-for="todo in todos" :key="todo.id">{{todo.title}}</li>
+      <li @click="todo_click(todo)" v-for="todo in todos" :key="todo.id">
+        <del v-if="todo.is_completed">{{todo.title}}</del>
+        <strong v-else>{{todo.title}}</strong>
+      </li>
     </ul>
   </div>
 </template>
@@ -16,6 +18,11 @@ export default {
         required : true
       }
     },
+    methods : {
+      todo_click(todo) {
+        todo.is_completed = !todo.is_completed
+      }
+    }
 }
 </script>
 
