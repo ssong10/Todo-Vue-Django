@@ -248,3 +248,22 @@ console.log(jwtDecode(token))
 
 ## 7. User별 Todo
 
+### 1. Django
+
+### 2. Vue
+
+```javascript
+this.$session.start()
+const token = this.$session.get('jwt')
+const options = {
+    headers : {
+        Authorization : `JWT ${token}`
+    }
+}
+axios.get(`http://127.0.0.1:8000/api/v1/users/${jwtDecode(token).user_id}/`,options)
+.then(response => {
+    this.todos = response.data.todo_set
+})
+// url을 변경하여 로그인한 유저에 대한 TodoList를 보여주게됨
+```
+

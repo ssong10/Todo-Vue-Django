@@ -1,12 +1,15 @@
 <template>
   <div class="home">
     <TodoForm @todoCreate-event="todoCreate" />
+    <!-- <TodoList :todos="all_todos" /> -->
+  <hr>
     <TodoList :todos="todos" />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
+import router from '../router'
 import axios from 'axios'
 import jwtDecode from 'jwt-decode'
 import TodoList from '@/components/TodoList.vue'
@@ -21,6 +24,7 @@ export default {
   data() {
     // 컴포넌트 에서는 반드시 data를 함수로 작성하고, object를 리턴한다
     return {
+      // all_todos : [],
       todos : [],
     }
   },
@@ -60,19 +64,36 @@ export default {
           Authorization : `JWT ${token}`
         }
       }
+      // 전체 Todo 받기 
       //axios 요청
-      axios.get('http://127.0.0.1:8000/api/v1/todos/',options)
+      // axios.get('http://127.0.0.1:8000/api/v1/todos/',options)
+      // .then(response => {
+      //   this.all_todos = response.data
+      //   console.log(response) // 만약 console.log 에러가 나게 된다면, package.json-> "no-console-off"
+      // })
+      // .catch(error =>{
+      //   console.log(error)
+      // })
+      // 한 아이디
+      axios.get(`http://127.0.0.1:8000/api/v1/users/${jwtDecode(token).user_id}/`,options)
       .then(response => {
-        this.todos = response.data
-        console.log(response) // 만약 console.log 에러가 나게 된다면, package.json-> "no-console-off"
+        this.todos = response.data.todo_set
+        console.log(response)
       })
       .catch(error =>{
         console.log(error)
-      })
+      })    
+    },
+    isLogin() {
+      this.$session.start()
+      // jwt 가 없다면 => token이 없다면, 비로그인이면 로그인페이지로 이동
+      if (!this.$session.has('jwt'))
+        router.push('/login')
     }
   },
   mounted() {
-    this.getTodos()
+    this.isLogin() // 로그인이 되어있으면
+    this.getTodos() // 가져온다
   }
 }
 </script>
