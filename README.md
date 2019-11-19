@@ -146,3 +146,67 @@ $ npm use router
 $ pip install djangorestframework-jwt
 ```
 
+> settings.py
+
+```python
+REST_FRAMEWORK = {
+    # 모든 views.py : 반드시 인증되어야 한다. (IsAuthenticated)
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    # a모든 views.py : 인증을 JWT 혹은 Session 등을 통해서 인증된다.
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+}
+# 토큰 유지시간을 위해 설정
+import datetime
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),
+}
+```
+
+> urls.py
+
+```python
+from rest_framework_jwt.views import obtain_jwt_token
+urlpatterns = [
+    path('api-token-auth/',obtain_jwt_token)
+]
+```
+
+
+
+### 2) Vue
+
+1. 로그인 관련 컴포넌트 생성
+
+2. 이벤트를 통해 axios 요청
+
+3. token 값 저장
+
+   1. `vue-session`
+
+      ```bash
+      $ npm i vue-session
+      ```
+
+   2. `src/main.js`
+
+      ```javascript
+      import VueSession from 'vue-session'
+      
+      Vue.config.productionTip = false
+      Vue.use(VueSession)
+      ```
+
+   3. `vue-session` 활용하여 저장
+
+      ```javascript
+      this.$session.start()
+      this.$session.set('jwt',token)
+      ```
+
+      
