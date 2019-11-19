@@ -25,7 +25,6 @@ export default {
   },
   methods : {
     todoCreate(title) {
-      console.log('==부모컴포넌트==')
       console.log(title)
       // const data = {
       //   title:title,
@@ -53,7 +52,7 @@ export default {
         console.log(response) // 만약 console.log 에러가 나게 된다면, package.json-> "no-console-off"
       })
       .catch(error =>{
-      console.log(error)
+        console.log(error)
       })
     }
   },
