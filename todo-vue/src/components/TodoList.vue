@@ -2,7 +2,7 @@
   <div class="todo-list">
     <ul>
       <li @click="todo_click(todo)" v-for="todo in todos" :key="todo.id">
-        <input @change="todo_completed(todo)" type="checkbox" v-model="todo.is_completed">
+        <input @change="updatedTodo(todo)" type="checkbox" v-model="todo.is_completed">
         {{todo.title}}
         <button @click="todo_delete(todo)">X</button>
       </li>
@@ -43,7 +43,7 @@ export default {
           console.log(error)
         })
       },
-      todo_completed(todo) {
+      updatedTodo(todo) {
         console.log(todo)
         this.$session.start()
         const token = this.$session.get('jwt')
@@ -52,13 +52,13 @@ export default {
           Authorization : `JWT ${token}`
           }
         }
-        const data = {
-          "id" : todo.id,
-          "title" : todo.title,
-          "user" : todo.user,
-          "is_completed" : todo.is_completed
-        }
-        axios.put(`http://127.0.0.1:8000/api/v1/todos/${todo.id}/`,data,options)
+        // const data = {
+        //   "id" : todo.id,
+        //   "title" : todo.title,
+        //   "user" : todo.user,
+        //   "is_completed" : todo.is_completed
+        // }
+        axios.put(`http://127.0.0.1:8000/api/v1/todos/${todo.id}/`,todo,options)
         .then(response => {
           console.log(response)
         })

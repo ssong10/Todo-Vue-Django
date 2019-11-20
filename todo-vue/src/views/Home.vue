@@ -11,7 +11,7 @@
 // @ is an alias to /src
 import router from '../router'
 import axios from 'axios'
-import jwtDecode from 'jwt-decode'
+import {mapGetters} from 'vuex' // mapGetters 하나만 가져온다
 import TodoList from '@/components/TodoList.vue'
 import TodoForm from '@/components/TodoForm.vue'
 
@@ -30,13 +30,14 @@ export default {
   },
   methods : {
     todoCreate(title) {
-      this.$session.start()
-      const token = this.$session.get('jwt')
-      const options = {
-        headers : {
-          Authorization : `JWT ${token}`
-        }
-      }
+      // this.$session.start()
+      // const token = this.$session.get('jwt')
+      // const options = {
+      //   headers : {
+      //     Authorization : `JWT ${token}`
+      //   }
+      // }
+
       // const data = {
       //   title:title,
       //   is_completed : false,
@@ -46,8 +47,8 @@ export default {
       // request.POST 인 경우는 반드시 formData!
       const formData = new FormData()
       formData.append('title',title)
-      formData.append('user', jwtDecode(token).user_id)
-      axios.post('http://127.0.0.1:8000/api/v1/todos/',formData,options)
+      formData.append('user', this.user)
+      axios.post('http://127.0.0.1:8000/api/v1/todos/',formData,this.options)
       .then(response => {
         this.todos.push(response.data)
       })
@@ -56,14 +57,6 @@ export default {
       })
     },
     getTodos() {
-      // axios 요청 시마다 헤더를 추가해서 보내라!
-      this.$session.start()
-      const token = this.$session.get('jwt')
-      const options = {
-        headers : {
-          Authorization : `JWT ${token}`
-        }
-      }
       // 전체 Todo 받기 
       //axios 요청
       // axios.get('http://127.0.0.1:8000/api/v1/todos/',options)
@@ -75,7 +68,7 @@ export default {
       //   console.log(error)
       // })
       // 한 아이디
-      axios.get(`http://127.0.0.1:8000/api/v1/users/${jwtDecode(token).user_id}/`,options)
+      axios.get(`http://127.0.0.1:8000/api/v1/users/${this.user}/`,this.options)
       .then(response => {
         this.todos = response.data.todo_set
         console.log(response)
@@ -87,13 +80,30 @@ export default {
     isLogin() {
       this.$session.start()
       // jwt 가 없다면 => token이 없다면, 비로그인이면 로그인페이지로 이동
-      if (!this.$session.has('jwt'))
+      if (!this.$session.has('jwt')) {
         router.push('/login')
+      } else {
+        this.$store.dispatch('login',this.$session.get('jwt'))
+      }
+
     }
   },
   mounted() {
     this.isLogin() // 로그인이 되어있으면
     this.getTodos() // 가져온다
+  },
+  computed : {
+    // spread 문법 '...'
+    ...mapGetters([
+      'options',
+      'user'
+    ])
+    // options() {
+    //   return this.$store.getters.options
+    // },
+    // user() {
+    //   return this.$store.getters.user
+    // }
   }
 }
 </script>
