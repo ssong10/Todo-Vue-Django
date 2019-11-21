@@ -267,3 +267,33 @@ axios.get(`http://127.0.0.1:8000/api/v1/users/${jwtDecode(token).user_id}/`,opti
 // url을 변경하여 로그인한 유저에 대한 TodoList를 보여주게됨
 ```
 
+## 8. 비로그인시 로그인 페이지로 이동
+
+## 9. delete, update
+
+## 10. Vuex
+
+> Vuex 는 Vue 에서 활용하는 상태 관리 패턴이다.
+
+### 핵심 개념
+
+1. `state` : 상태, Vue 컴포넌트 상에서 `data` 
+
+   * 직접 변경이 불가능하고, 항상 `mutation` 을 통해 변경한다.
+
+   * `state` 가 변경되면 view(화면)가 업데이트 된다.
+
+2. `mutation` : `state` 를 변경하기 위한 `methods`
+
+   * `mutation` 함수는 첫 번째 인자로 항상 `state` 를 받는다.
+   * `mutation` 함수는 항상 `commit` 을 통해 호출된다.
+
+3. `action` : 비동기 처리를 하는 `methods` , `mutation` 도 호출 가능하다. (`state` 변화는 `mutation` `commit` 을 통해 가능하다)
+
+   * `action` 함수는 첫번째 인자로 항상 context를 받는다.
+     * `state`, `commit` , `dispatch` , ....
+   * `action` 함수는 항상 `dispatch` 를 통해 호출된다.
+
+4. `getters` : Vue component 상에서의 `computed`
+
+   * 일반적인 `state`  값을 활용하는 변수의 경우 `getters`에 정의한다.
